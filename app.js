@@ -244,7 +244,18 @@ app.post("/newAdd", function (req, res) {
       res.redirect("/");
     }
   });
-  
+
+app.get('/dev', function(req,res){
+  if(req.isAuthenticated())
+  {
+    res.render('messages',{user : req.user});
+  } 
+  else
+  {
+    res.render('messages',{user: null});
+  }
+});
+
 app.get('/chat', function(req,res){
   const body = req.body;  
   // const chatSchema = new mongoose.Schema({
