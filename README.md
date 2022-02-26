@@ -8,6 +8,6 @@ College website down? Report it on this website and earn xp points.
 Team Name - KhiKhiKhi <br>
 Team Details
 1. [Pushkar Patel](https://github.com/pushkar-dev)
-2. [Vinayak Sachan](https://github.com/Pepinni)
-3. [Piyush Verma](https://github.com/metavinayak)
+2. [Vinayak Sachan](https://github.com/metavinayak)
+3. [Piyush Verma](https://github.com/Pepinni)
 <hr>
