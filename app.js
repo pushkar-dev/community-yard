@@ -245,12 +245,7 @@ app.post("/newAdd", function (req, res) {
 });
 
 app.get("/chatWithOwner", function (req, res) {
-  const body = req.body;
-      );
-    } else {
-      res.redirect("/");
-    }
-  });
+  const body = req.body;});
 
 app.get('/dev', function(req,res){
   if(req.isAuthenticated())
