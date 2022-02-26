@@ -194,7 +194,7 @@ app.get("/fetchForBuyer", function (req, res) {
 
 app.get("/newAdd", function (req, res) {
   if (req.isAuthenticated()) {
-    res.render("addForm", { user: req.user });
+    res.render("addform", { user: req.user });
   } 
   else {
     res.redirect('/');
