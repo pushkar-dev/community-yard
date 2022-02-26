@@ -96,13 +96,19 @@ app.get('/auth/google/CS',
 passport.authenticate('google', { failureRedirect: '/' }),
 function(req, res) {
   // Successful authentication, redirect home.
-  res.redirect('/account');
+  res.redirect('/');
 });
 
 
 // index page
 app.get('/', function(req, res) {
-  res.render('home');
+  if(req.isAuthenticated()){
+    const user = req.user;
+    console.log(user);
+    res.render("home", {user : user});
+  }else{
+    res.render('home', {user: null});
+  }
 });
 
 // about page
