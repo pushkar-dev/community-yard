@@ -38,6 +38,7 @@ mongoose.connect("mongodb://localhost:27017/CS"); //, {useNewUrlParser: true,use
 const itemSchema = new mongoose.Schema({
   // db1
   itemName: String,
+  person_name: String,
   person_email: String,
   item_image_url: String,
   item_description: String,
@@ -190,6 +191,7 @@ app.get("/fetchForBuyer", function (req, res) {
   }
 });
 
+
 app.get("/newAdd", function (req, res) {
   if (req.isAuthenticated()) {
     res.render("addForm", { user: req.user });
@@ -213,6 +215,7 @@ app.post("/newAdd", function (req, res) {
         if (!err) {
           const newItem = new Item({
             itemName: item.itemName,
+            person_name: item.person_name,
             person_email: item.person_email,
             item_image_url: item.item_image_url,
             item_description: item.item_description,
@@ -236,12 +239,35 @@ app.post("/newAdd", function (req, res) {
           });
         }
       }
-    );
-  } else {
-    res.redirect("/");
-  }
-});
-
-app.listen(process.env.PORT || 8080, function () {
-  console.log("Server running on port 8080");
+      );
+    } else {
+      res.redirect("/");
+    }
+  });
+  
+app.get('/chat', function(req,res){
+  const body = req.body;  
+  // const chatSchema = new mongoose.Schema({
+  //   item_name: String,
+  //   item_owner: String,
+  //   chats: [
+  //     {
+  //       sender: String,
+  //       msg: [
+  //         {
+  //           time: Date,
+  //           conv: String,
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // });
+  Chat.findOne({item_name:body.item_name, item_owner:body.item_owner}, function(err,found){
+    if(err) console.log(err);
+    
+  })
+  
+})
+  app.listen(process.env.PORT || 8080, function () {
+    console.log("Server running on port 8080");
 });
