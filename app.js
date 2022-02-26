@@ -246,6 +246,25 @@ app.post("/newAdd", function (req, res) {
 
 app.get("/chatWithOwner", function (req, res) {
   const body = req.body;
+      );
+    } else {
+      res.redirect("/");
+    }
+  });
+
+app.get('/dev', function(req,res){
+  if(req.isAuthenticated())
+  {
+    res.render('messages',{user : req.user});
+  } 
+  else
+  {
+    res.render('messages',{user: null});
+  }
+});
+
+app.get('/chat', function(req,res){
+  const body = req.body;  
   // const chatSchema = new mongoose.Schema({
   //   item_name: String,
   //   item_owner: String,
