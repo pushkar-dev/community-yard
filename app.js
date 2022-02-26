@@ -34,12 +34,38 @@ mongoose.connect("mongodb://localhost:27017/CS")//, {useNewUrlParser: true,useUn
 
 
 /////////       Schema Creation       //////////
+const itemSchema = new mongoose.Schema({     // db1
+  itemName : String,
+  person_name : String,
+  item_image_url: String,
+  item_description: String,
+  item_price: String,
+  person_contact: String,
+})
+
+const chatSchema = new mongoose.Schema({
+  item_name : String,
+  item_owner: String,
+  chats : [
+      {
+        sender : String,
+        msg :
+        [
+          {
+          time : Date,
+          conv : String
+          }
+        ],
+      }
+    ]
+})
 const userSchema = new mongoose.Schema({
   username :{type:String, unique :true},
   name : String,
   pic : String,
-  email : String
+  email : String,
 });
+
 
 userSchema.plugin(passportLocalMongoose,{
 usernameField : "username"
@@ -47,6 +73,8 @@ usernameField : "username"
 userSchema.plugin(findOrCreate);
 
 const User = mongoose.model("user", userSchema);
+const Chat = mongoose.model("chat", chatSchema);
+const Item = mongoose.model("item", itemSchema);
 
 passport.use(User.createStrategy())
 
