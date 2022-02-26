@@ -1,0 +1,24 @@
+{
+  "name": "hack36-2022",
+  "version": "1.0.0",
+  "description": "A website for barting old belongings like books, electronics and apparatus for college students.<br> Have a book from previous sem? Plan on selling to 'kabadi'? we got the solution, trade it with your juniors or donate it to college community at our website!<br> College website down? Report it on this website and earn xp points. <hr>",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pushkar-dev/community-yard.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pushkar-dev/community-yard/issues"
+  },
+  "homepage": "https://github.com/pushkar-dev/community-yard#readme",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "express": "^4.17.1"
+  }
+}
