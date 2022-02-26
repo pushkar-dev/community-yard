@@ -1,4 +1,5 @@
 /node_modules/
+/upload_docs/
 app2.js
 test.ejs
 test.html
