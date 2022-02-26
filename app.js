@@ -35,8 +35,8 @@ mongoose.connect("mongodb://localhost:27017/CS"); //, {useNewUrlParser: true,use
 // mongoose.connect(String(process.env.PASS),{ useNewUrlParser: true , useUnifiedTopology: true}); // Running on a remote server
 
 ///////////////////////////////////
-const website_list = ['gymkhana.iitmandi.co.in', 'iitmandi.co.in', 'ecell.iitmandi.co.in', 'hnt.iitmandi.co.in', 'litsoc.iitmandi.co.in', 'mtb.iitmandi.co.in', 'pc.iitmandi.co.in', 'robotronics.iitmandi.co.in', 'saic.iitmandi.co.in', 'stac.iitmandi.co.in', 'yantrik.iitmandi.co.in', 'astrores.iitmandi.co.in', 'baat-cheet.iitmandi.co.in', 'discourse.iitmandi.co.in', 'codemaniacs.iitmandi.co.in', 'tartarusctf.iitmandi.co.in', 'yggdrasil.iitmandi.co.in', 'frosthack.in', 'quiz.iitmandi.co.in', 'rover.iitmandi.co.in', 'srijan.iitmandi.co.in', 'uri.iitmandi.co.in', 'sntc.iitmandi.ac.in', 'sports.iitmandi.co.in', 'wiki.iitmandi.co.in']
-    ////////////
+// const website_list = ['gymkhana.iitmandi.co.in', 'iitmandi.co.in', 'ecell.iitmandi.co.in', 'hnt.iitmandi.co.in', 'litsoc.iitmandi.co.in', 'mtb.iitmandi.co.in', 'pc.iitmandi.co.in', 'robotronics.iitmandi.co.in', 'saic.iitmandi.co.in', 'stac.iitmandi.co.in', 'yantrik.iitmandi.co.in', 'astrores.iitmandi.co.in', 'baat-cheet.iitmandi.co.in', 'discourse.iitmandi.co.in', 'codemaniacs.iitmandi.co.in', 'tartarusctf.iitmandi.co.in', 'yggdrasil.iitmandi.co.in', 'frosthack.in', 'quiz.iitmandi.co.in', 'rover.iitmandi.co.in', 'srijan.iitmandi.co.in', 'uri.iitmandi.co.in', 'sntc.iitmandi.ac.in', 'sports.iitmandi.co.in', 'wiki.iitmandi.co.in']
+////////////
 
 
 /////////       Schema Creation       //////////
@@ -251,24 +251,45 @@ app.post("/newAdd", function(req, res) {
 });
 app.post("/websiteReport", function(req, res) {
     if (req.isAuthenticated()) {
-        const report = req.body; //{website_url: 'a',report_type: 'Update',Desc: 'a',email: 'b20142@students.iitmandi.ac.in'}
-        const newReport = new Website({
-            website_url: report.website_url,
-            error_description: report.Desc,
-            report_type: report.report_type,
-            email: report.email,
-            date: Date()
-        })
-        newReport.save(function(err) {
-            if (err) {
-                console.log(err);
-            }
+        const report = req.body;
+        const url = report.website_url.toLowerCase();
+        // if (website_list.includes(report.website_url.toLowerCase())) {
+        if (url.includes('iitmandi.ac.in') || url.includes('iitmandi.co.in')) {
+            const newReport = new Website({
+                website_url: report.website_url.toLowerCase(),
+                error_description: report.Desc,
+                report_type: report.report_type,
+                email: report.email,
+                date: Date()
+            })
+            newReport.save(function(err) {
+                if (err) {
+                    console.log(err);
+                }
+            });
+        } else {
+            console.log("Not present on SNTC server");
+        }
+
+        res.redirect('/websiteStatus');
+    } else {
+        res.redirect('/');
+    }
+});
+app.post("/deleteStatus", function(req, res) {
+    if (req.isAuthenticated()) {
+        Website.deleteOne({ "_id": req.body.id }).then(function() {
+            console.log("Data deleted"); // Success
+        }).catch(function(error) {
+            console.log(error); // Failure
         });
         res.redirect('/websiteStatus');
     } else {
         res.redirect('/');
     }
 });
+
+
 app.get("/chatWithOwner", function(req, res) {
     const body = req.body;
 });
