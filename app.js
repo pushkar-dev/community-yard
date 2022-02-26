@@ -7,24 +7,22 @@ const ejs = require("ejs")
 const mongoose = require("mongoose");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const findOrCreate = require("mongoose-findorcreate");
-// const _ = require('lodash');
-// const moment = require("moment");
 require('https').globalAgent.options.rejectUnauthorized = false;
-const mongoStore = require("connect-mongo");
+// const mongoStore = require("connect-mongo");
 
 const app = express();
 app.use(express.static("public"));
 app.use(express.urlencoded({extended : true}));
 app.set('view engine', 'ejs')
 
-// app.use(session({
-//   secret : process.env.SECRET,
-//   resave : false,
-//   saveUninitialized : false,
-//   // store: mongoStore.create({
-//   //   mongoUrl: process.env.PASS
-//   // })
-// }));
+app.use(session({
+  secret : process.env.SECRET,
+  resave : false,
+  saveUninitialized : false,
+  // store: mongoStore.create({
+  //   mongoUrl: process.env.PASS
+  // })
+}));
 
 app.use(passport.initialize()); 
 app.use(passport.session());
@@ -63,8 +61,8 @@ User.findById(id, function(err, user) {
 
 ////////Google OAuth 2.0 Strategy/////////
 passport.use(new GoogleStrategy({
-  // clientID: process.env.CLIENT_ID,
-  // clientSecret: process.env.CLIENT_SECRET,
+  clientID: process.env.CLIENT_ID,
+  clientSecret: process.env.CLIENT_SECRET,
   // callbackURL: "https://community-scrapeyard.herokuapp.com/auth/google/CS",
   callbackURL: "http://localhost:8080/auth/google/CS",
   userProfileUrl : "https://www.googleapis.com.oauth2.v3.userinfo"
@@ -84,9 +82,9 @@ function(accessToken, refreshToken, profile, cb) {
 ));
 
 
-///////////////////////////////////////////////
-/////////// Get Routes ////////////////////////
-///////////////////////////////////////////////
+// ///////////////////////////////////////////////
+// /////////// Get Routes ////////////////////////
+// ///////////////////////////////////////////////
 
 
 //////        Google Authentication       /////////
