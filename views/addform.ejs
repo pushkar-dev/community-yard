@@ -17,7 +17,7 @@
             
             <div class="form-floating mb-3">
                 <input type="email" class="form-control" id="email" id="email"
-                    placeholder="example@emapmle.com">
+                    value="<%= user.email %>" disabled>
                 <label for="email">Owner Email</label>
             </div>
 
@@ -28,13 +28,13 @@
                 <label for="phone">Phone number</label>
             </div>
             <div class="mb-3">
-                <label for="formFile" class="form-label">Upload Image</label>
+                <label for="formFile" class="form-label">Upload Product Image</label>
                 <input class="form-control" type="file" id="formFile" name="imgfile">
             </div>
             <div class="form-floating mb-3">
                 <textarea class="form-control" placeholder="Product Description"
                     id="Desc" name="Desc" style="height: 150px;"></textarea>
-                <label for="Desc">Breif Product Description</label>
+                <label for="Desc">Brief Product Description</label>
             </div>
             <div class="form-floating mb-3">
                 <button type="submit" class="btn btn-primary">Submit</button>
