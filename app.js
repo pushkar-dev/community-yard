@@ -155,8 +155,8 @@ app.get("/", function(req, res) {
     }
 });
 
-// Scrapeyard
-app.get("/scrapeyard", function(req, res) {
+// Scrapyard
+app.get("/scrapyard", function(req, res) {
     if (req.isAuthenticated()) {
         const user = req.user;
         Item.find({}, function(err, found) {
@@ -187,16 +187,18 @@ app.get("/fetchForOwner", function(req, res) {
 
 app.get("/fetchForBuyer", function(req, res) {
     // items available
-    if (req.isAuthenticated()) {
-        Item.find({}, function(err, found) {
-            if (err) console.log(err);
-            else {
+    Item.find({}, function(err, found) {
+        if (err) {
+            console.log(err);
+            res.redirect('/');
+        } else {
+            if (req.isAuthenticated()) {
                 res.render("itemsAvailable", { user: req.user, items: found });
+            } else {
+                res.render("itemsAvailable", { user: null, items: found });
             }
-        });
-    } else {
-        res.redirect("/");
-    }
+        }
+    });
 });
 
 app.get("/newAdd", function(req, res) {
