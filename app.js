@@ -71,6 +71,7 @@ const userSchema = new mongoose.Schema({
 });
 const websiteSchema = new mongoose.Schema({
     website_url: String,
+    report_type: String,
     error_description: String,
     email: String,
     date: Date
@@ -250,9 +251,20 @@ app.post("/newAdd", function(req, res) {
 });
 app.post("/websiteReport", function(req, res) {
     if (req.isAuthenticated()) {
-        const report = req.body;
-        console.log(report);
-        res.render('/');
+        const report = req.body; //{website_url: 'a',report_type: 'Update',Desc: 'a',email: 'b20142@students.iitmandi.ac.in'}
+        const newReport = new Website({
+            website_url: report.website_url,
+            error_description: report.Desc,
+            report_type: report.report_type,
+            email: report.email,
+            date: Date()
+        })
+        newReport.save(function(err) {
+            if (err) {
+                console.log(err);
+            }
+        });
+        res.redirect('/websiteStatus');
     } else {
         res.redirect('/');
     }
@@ -269,11 +281,18 @@ app.get('/dev', function(req, res) {
     }
 });
 app.get('/websiteStatus', function(req, res) {
-    if (req.isAuthenticated()) {
-        res.render('websiteStatus', { user: req.user, websites: [] });
-    } else {
-        res.render('websiteStatus', { user: null, websites: [] });
-    }
+    Website.find({}, function(err, websites) {
+        if (err) {
+            console.log(err);
+            res.redirect('/');
+        } else {
+            if (req.isAuthenticated()) {
+                res.render('websiteStatus', { user: req.user, websites: websites });
+            } else {
+                res.render('websiteStatus', { user: null, websites: websites });
+            }
+        }
+    });
 });
 app.get('/chat', function(req, res) {
     const body = req.body;
