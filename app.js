@@ -3,6 +3,7 @@ const session = require("express-session");
 const passport = require("passport");
 const passportLocalMongoose = require("passport-local-mongoose");
 const express = require("express");
+const ejsMate = require('ejs-mate')
 const ejs = require("ejs")
 const mongoose = require("mongoose");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
@@ -14,6 +15,7 @@ const app = express();
 app.use(express.static("public"));
 app.use(express.urlencoded({extended : true}));
 app.set('view engine', 'ejs')
+app.engine('ejs',ejsMate)
 
 app.use(session({
   secret : process.env.SECRET,
