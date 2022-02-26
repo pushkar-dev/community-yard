@@ -139,15 +139,14 @@ app.get(
 
 // Home route
 app.get("/", function (req, res) {
-  if(req.isAuthenticated()){
-    res.render('home', {user:req.user});
-  }
-  else{
-    res.render('home', {user:null});
+  if (req.isAuthenticated()) {
+    res.render("home", { user: req.user });
+  } else {
+    res.render("home", { user: null });
   }
 });
 
-// Scrapeyard 
+// Scrapeyard
 app.get("/scrapeyard", function (req, res) {
   if (req.isAuthenticated()) {
     const user = req.user;
@@ -162,8 +161,44 @@ app.get("/scrapeyard", function (req, res) {
   }
 });
 
-// about page
-// Logging out
+app.get("/fetchForOwner", function (req, res) {
+  //manage
+  if (req.isAuthenticated()) {
+    const user = req.user;
+    Item.find({ person_email: user.email }, function (err, found) {
+      if (err) console.log(err);
+      else {
+        res.render("/manageItems", { user: user, items: found });
+      }
+    });
+  } else {
+    res.redirect("/");
+  }
+});
+
+app.get("/fetchForBuyer", function (req, res) {
+  // items available
+  if (req.isAuthenticated()) {
+    Item.find({}, function (err, found) {
+      if (err) console.log(err);
+      else {
+        res.render("itemsAvailable", { user: req.user, items: found });
+      }
+    });
+  } else {
+    res.redirect('/');
+  }
+});
+
+app.get("/newAdd", function (req, res) {
+  if (req.isAuthenticated()) {
+    res.render("addForm", { user: req.user });
+  } 
+  else {
+    res.redirect('/');
+  }
+});
+// Logout
 app.get("/logout", function (req, res) {
   req.logout();
   res.redirect("/");
@@ -205,16 +240,6 @@ app.post("/newAdd", function (req, res) {
   } else {
     res.redirect("/");
   }
-});
-
-app.get("/fetchForOwner", function (req, res) {
-});
-
-app.get("/fetchForBuyer", function (req, res) {
-});
-
-app.get("/newAdd", function (req, res) {
-  res.render('addFrom');
 });
 
 app.listen(process.env.PORT || 8080, function () {
