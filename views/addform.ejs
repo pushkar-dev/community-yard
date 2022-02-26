@@ -1,0 +1,44 @@
+<% layout('layouts/boilerplate')%>
+<div class="flex flex-x">
+    <form method="POST" action="/newAdd">
+        <div class="bg-light rounded h-100 p-4">
+            <h6 class="mb-4">Floating Label</h6>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" name="Name" id="Name"
+                    placeholder="Name">
+                <label for="Name">Product Name</label>
+            </div>
+            
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" name="Owner" id="Owner"
+                    placeholder="Owner">
+                <label for="Owner">Owner Name</label>
+            </div>
+            
+            <div class="form-floating mb-3">
+                <input type="email" class="form-control" id="email" id="email"
+                    placeholder="example@emapmle.com">
+                <label for="email">Owner Email</label>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input type="tel" class="form-control" id="phone"
+                name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
+                placeholder="Phone">
+                <label for="phone">Phone number</label>
+            </div>
+            <div class="mb-3">
+                <label for="formFile" class="form-label">Upload Image</label>
+                <input class="form-control" type="file" id="formFile" name="imgfile">
+            </div>
+            <div class="form-floating mb-3">
+                <textarea class="form-control" placeholder="Product Description"
+                    id="Desc" name="Desc" style="height: 150px;"></textarea>
+                <label for="Desc">Breif Product Description</label>
+            </div>
+            <div class="form-floating mb-3">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>
