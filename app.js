@@ -51,7 +51,7 @@ const chatSchema = new mongoose.Schema({
   item_owner: String,
   chats: [
     {
-      sender: String,
+      buyer: String,
       msg: [
         {
           time: Date,
@@ -61,6 +61,7 @@ const chatSchema = new mongoose.Schema({
     },
   ],
 });
+
 const userSchema = new mongoose.Schema({
   username: { type: String, unique: true },
   name: String,
@@ -187,17 +188,15 @@ app.get("/fetchForBuyer", function (req, res) {
       }
     });
   } else {
-    res.redirect('/');
+    res.redirect("/");
   }
 });
-
 
 app.get("/newAdd", function (req, res) {
   if (req.isAuthenticated()) {
     res.render("addform", { user: req.user });
-  } 
-  else {
-    res.redirect('/');
+  } else {
+    res.redirect("/");
   }
 });
 // Logout
@@ -230,7 +229,7 @@ app.post("/newAdd", function (req, res) {
           const newChat = new Chat({
             itemName: item.itemName,
             item_owner: item.person_email,
-            chats: [],
+            chats: []
           });
           newChat.save(function (err) {
             if (err) {
@@ -239,20 +238,20 @@ app.post("/newAdd", function (req, res) {
           });
         }
       }
-      );
-    } else {
-      res.redirect("/");
-    }
-  });
-  
-app.get('/chat', function(req,res){
-  const body = req.body;  
+    );
+  } else {
+    res.redirect("/");
+  }
+});
+
+app.get("/chatWithOwner", function (req, res) {
+  const body = req.body;
   // const chatSchema = new mongoose.Schema({
   //   item_name: String,
   //   item_owner: String,
   //   chats: [
   //     {
-  //       sender: String,
+  //       buyer: String,
   //       msg: [
   //         {
   //           time: Date,
@@ -262,12 +261,21 @@ app.get('/chat', function(req,res){
   //     },
   //   ],
   // });
-  Chat.findOne({item_name:body.item_name, item_owner:body.item_owner}, function(err,found){
-    if(err) console.log(err);
-    
-  })
-  
-})
-  app.listen(process.env.PORT || 8080, function () {
-    console.log("Server running on port 8080");
+  Chat.findOne(
+    { item_name: body.item_name, item_owner: body.person_email,"Item.chats.buyer":body.buyer_email },
+    function (err, found) {
+      if (err) console.log(err);
+      else if(found.length==0){
+        const com = {
+          buyer : req.user.name,
+          msg : [],
+        }
+      }
+      else{
+        res.render("chat", { user: req.user, chats: found });
+      }
+    });
+});
+app.listen(process.env.PORT || 8080, function () {
+  console.log("Server running on port 8080");
 });
