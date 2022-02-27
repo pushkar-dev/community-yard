@@ -208,6 +208,7 @@ app.get("/fetchForOwner", function (req, res) {
 
 app.get("/fetchForBuyer", function (req, res) {
   // items available
+  if(!req.isAuthenticated()) {res.redirect("/");}
   Item.find({}, function (err, found) {
     if (err) {
       console.log(err);
