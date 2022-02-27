@@ -8,13 +8,15 @@ const ejs = require("ejs");
 const mongoose = require("mongoose");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const findOrCreate = require("mongoose-findorcreate");
-var http = require("http").Server(app);
-var io = require("socket.io")(http);
+// var http = require("http").Server(app);
+// var io = require("socket.io")(http);
 require("https").globalAgent.options.rejectUnauthorized = false;
+const multer = require("multer");
 // const mongoStore = require("connect-mongo");
 
 const app = express();
 app.use(express.static("public"));
+app.use(express.static("uploaded_docs"))
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.engine("ejs", ejsMate);
@@ -33,6 +35,17 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Configure file storage mechanism from multer
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'uploaded_docs/')
+    },
+    filename: function (req, file, cb) {
+        cb(null, req.body.person_email + '__' + String(Date.now()) + 
+        '.' + file.mimetype.split('/')[1]);
+    }
+  })
+  var upload = multer({ storage: storage });
 mongoose.connect("mongodb://localhost:27017/CS"); //, {useNewUrlParser: true,useUnifiedTopology: true,}); //Running on localhost
 // mongoose.connect(String(process.env.PASS),{ useNewUrlParser: true , useUnifiedTopology: true}); // Running on a remote server
 
@@ -46,10 +59,11 @@ const itemSchema = new mongoose.Schema({
   itemName: String,
   person_name: String,
   person_email: String,
-  item_image_url: String,
   item_description: String,
   item_price: String,
   person_contact: String,
+  upload : {type : String, default : ""},
+  uploadType : {type : String, default : ""}
 });
 
 const chatSchema = new mongoose.Schema({
@@ -272,13 +286,13 @@ app.get("/chat", function (req, res) {
 });
 
 // Code for creating a socket connection
-io.on("connection", () => {
-  console.log("a user is connected");
-});
+// io.on("connection", () => {
+//   console.log("a user is connected");
+// });
 ////////////////////////////////////////////////////////
 ////////////////// POST REQUESTS ///////////////////////
 ////////////////////////////////////////////////////////
-app.post("/newAdd", function (req, res) {
+app.post("/addItem", upload.single('image'),function (req, res) {
   if (req.isAuthenticated()) {
     const item = req.body;
     console.log(item);
@@ -290,10 +304,11 @@ app.post("/newAdd", function (req, res) {
             itemName: item.itemName,
             person_name: item.person_name,
             person_email: item.person_email,
-            item_image_url: item.item_image_url,
             item_description: item.item_description,
             item_price: item.item_price,
             person_contact: item.person_contact,
+            upload : (req.file.filename != undefined)? req.file.filename : '',
+            uploadType :(req.file.mimetype != undefined)? req.file.mimetype : '',
           });
           newItem.save(function (err) {
             if (err) {
@@ -310,6 +325,7 @@ app.post("/newAdd", function (req, res) {
               console.log(err);
             }
           });
+          res.redirect('/');
         }
       }
     );

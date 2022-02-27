@@ -1,10 +1,10 @@
 <% layout('layouts/boilerplate')%>
     <div class="flex flex-x">
-        <form method="POST" action="/newAdd" enctype="multipart/form-data">
+        <form method="POST" action="/addItem" enctype="multipart/form-data">
             <div class="bg-light rounded h-100 p-4">
                 <h6 class="mb-4">Floating Label</h6>
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" name="Name" id="item_name" placeholder="Name">
+                    <input type="text" class="form-control" name="itemName" id="item_name" placeholder="Name">
                     <label for="Name">Product Name</label>
                 </div>
 
@@ -17,15 +17,16 @@
 
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="tel" class="form-control" id="phone" name="person_contact" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" placeholder="Phone">
+                    <input type="number" class="form-control" id="phone" name="person_contact" placeholder="Phone">
                     <label for="phone">Phone number</label>
                 </div>
                 <div class="mb-3">
-                    <input class="form-control" type="file" id="image" name="image" value="" accept="image/*,application/pdf">
+                    <!-- <input class="form-control" type="file" id="image" name="image" value="" accept="image/*,application/pdf"> -->
+                    <input type="file" name="image" id="image" class="form-control" accept="image/*,application/pdf" required>
                     <label for="image" class="form-label">Upload Product Image</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <textarea class="form-control" id="Desc" name="Desc" style="height: 150px;"></textarea>
+                    <textarea class="form-control" id="Desc" name="item_description" style="height: 150px;"></textarea>
                     <label for="Desc">Brief Product Description</label>
                 </div>
                 <div class="form-floating mb-3">
