@@ -74,8 +74,8 @@ const itemSchema = new mongoose.Schema({
 const msgSchema = new mongoose.Schema({
     buyer_name: String,
     msg: [{
-        time: Date,
         conv: String,
+        msg_sender:String
     }]
 })
 const msg = mongoose.model('msg', msgSchema);
@@ -170,9 +170,17 @@ app.get(
 // Home route
 app.get("/", function(req, res) {
     if (req.isAuthenticated()) {
-        res.render("home", { user: req.user });
+      res.render("home", { user: req.user,msgs:[] });
+      // Chat.findOne({item_owner: req.user.email },
+      //   function(err, found) {
+      //       console.log(found);
+      //       if (err) console.log(err);
+      //       else {
+              // res.render("home", { user: req.user,msgs:found });
+      //       }
+      //     });
     } else {
-        res.render("home", { user: null });
+        res.render("home", { user: null,msgs:[] });
     }
 });
 
@@ -239,13 +247,13 @@ app.get("/logout", function(req, res) {
     res.redirect("/");
 });
 
-app.get("/dev", function(req, res) {
-    if (req.isAuthenticated()) {
-        res.render("comingSoon", { user: req.user });
-    } else {
-        res.render("comingSoon", { user: null });
-    }
-});
+// app.get("/dev", function(req, res) {
+//     if (req.isAuthenticated()) {
+//         res.render("comingSoon", { user: req.user });
+//     } else {
+//         res.render("comingSoon", { user: null });
+//     }
+// });
 
 app.get("/websiteStatus", function(req, res) {
     Website.find({}, function(err, websites) {
@@ -267,11 +275,11 @@ app.post("/chatWithOwner", function(req, res) {
     const body = req.body;
     Chat.findOne({ item_name: body.item_name, item_owner: body.item_owner },
         function(err, found) {
-            console.log(found);
             if (err) console.log(err);
             else {
+              console.log(found);
                 if (found) {
-                    const isAvail = false;
+                    let isAvail = false;
                     found.chats.forEach(function(chat, index) {
                         if (chat.buyer_name === req.user.name) {
                             isAvail = true;
@@ -284,6 +292,7 @@ app.post("/chatWithOwner", function(req, res) {
                             msg: [],
                         };
                         found.chats.push(chatObj);
+                        found.save();
                         res.render("chat_room", { user: req.user, chat: chatObj, item: body });
                     }
                 }
@@ -299,7 +308,7 @@ app.post("/chatWithBuyer", function(req, res) {
             if (err) console.log(err);
             else {
                 if (found) {
-                    const isAvail = false;
+                    let isAvail = false;
                     found.chats.forEach(function(chat, index) {
                         if (chat.buyer_name === body.buyer_name) {
                             isAvail = true;
@@ -312,6 +321,7 @@ app.post("/chatWithBuyer", function(req, res) {
                             msg: [],
                         };
                         found.chats.push(chatObj);
+                        found.save();
                         res.render("chat_room", { user: req.user, chat: chatObj });
                     }
                 }
@@ -319,24 +329,6 @@ app.post("/chatWithBuyer", function(req, res) {
         }
     );
 });
-
-app.post("/buyerSendMsg", function(req, res) {
-    if (req.isAuthenticated()) {
-        const body = req.body;
-        Chat.findOne({ item_name: body.item_name, item_owner: body.item_owner }, function(err, found) {
-            if (err) console.log(err);
-            else {
-                found.chats.forEach(function(chat, i) {
-                    if (chat.buyer_name === req.user.name) {
-
-                    }
-                })
-            }
-        })
-    } else {
-        res.redirect("/");
-    }
-})
 
 // Code for creating a socket connection
 // io.on("connection", () => {
@@ -385,6 +377,84 @@ app.post("/addItem", upload.single("image"), function(req, res) {
         res.redirect("/");
     }
 });
+
+// When buyer sends a message to owner
+app.post("/buyerSendMsg", function(req,res){
+  if(req.isAuthenticated()){
+    const body = req.body;
+    Chat.findOne({item_name:body.item_name, item_owner:body.item_owner}, function(err,found){
+      if(err) console.log(err);
+      else{
+        let isAvail = false;
+        found.chats.forEach(function(chat,i){
+          if(chat.buyer_name === req.user.name){
+            isAvail = true;
+            const obj = {
+              conv : body.msg,
+              sender : req.user.name,
+            }
+            chat.msg.push(obj);
+            found.save();
+            res.render("chat_room", {user:req.user, chat:chat, item:body});
+          }
+        });
+        if (!isAvail) {
+          // This block will never be executed because if the sender is sending a message /
+          // then the chat object will obviously be created.
+          const chatObj = {
+            buyer_name: body.buyer_name,
+            msg: [],
+          };
+          found.chats.push(chatObj);
+          found.save();
+          res.render("chat_room", { user: req.user, chat: chatObj, item:body});
+        }
+      }
+    })
+  }
+  else{
+    res.redirect("/");
+  }
+})
+// When owner sends a message to buyer
+app.post("/ownerSendMsg", function(req,res){
+  if(req.isAuthenticated()){
+    const body = req.body;
+    Chat.findOne({item_name:body.item_name, item_owner:req.user.name}, function(err,found){
+      if(err) console.log(err);
+      else{
+        let isAvail = false;
+        found.chats.forEach(function(chat,i){
+          if(chat.buyer_name === body.buyer_name){
+            isAvail = true;
+            const obj = {
+              conv : body.msg,
+              sender : req.user.name,
+            }
+            chat.msg.push(obj);
+            found.save();
+            res.render("chat_room", {user:req.user, chat:chat, item:body});
+          }
+        });
+        if (!isAvail) {
+          // This block will never be executed because if the sender is sending a message /
+          // then the chat object will obviously be created.
+          const chatObj = {
+            buyer_name: body.buyer_name,
+            msg: [],
+          };
+          found.chats.push(chatObj);
+          found.save();
+          res.render("chat_room", { user: req.user, chat: chatObj , item:body});
+        }
+      }
+    })
+  }
+  else{
+    res.redirect("/");
+  }
+})
+
 app.post("/websiteReport", function(req, res) {
     if (req.isAuthenticated()) {
         const report = req.body;
