@@ -209,6 +209,7 @@ app.get("/fetchForOwner", function (req, res) {
 app.get("/fetchForBuyer", function (req, res) {
   // items available
   if(!req.isAuthenticated()) {res.redirect("/");}
+  else{
   Item.find({}, function (err, found) {
     if (err) {
       console.log(err);
@@ -220,7 +221,7 @@ app.get("/fetchForBuyer", function (req, res) {
         res.render("itemsAvailable", { user: null, items: found });
       }
     }
-  });
+  });}
 });
 
 app.get("/newAdd", function (req, res) {
