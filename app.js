@@ -274,13 +274,15 @@ app.post("/chatWithOwner", function(req, res) {
                 console.log(found);
                 if (found) {
                     const isAvail = false;
+                    console.log(found.chats)
+                    console.log("huhehuehue1")
+
                     found.chats.forEach(function(chat, index) {
                         if (chat.buyer_name === req.user.name) {
                             isAvail = true;
                             console.log(chat);
-                            console.log("huehhuheuue");
-
-                            // res.render("chat_room", { user: req.user, chat: chat });
+                            console.log("huehhuheuue2");
+                            res.render("chat_room", { user: req.user, chat: chat, item: body });
                         }
                     });
                     if (!isAvail) {
@@ -289,18 +291,17 @@ app.post("/chatWithOwner", function(req, res) {
                             msg: [],
                         };
                         found.chats.push(chatObj);
-                        console.log(chat);
-                        console.log("huehhuheuue");
+                        console.log("huehhuheuue3");
 
-                        // res.render("chat_room", { user: req.user, chat: chatObj });
+                        res.render("chat_room", { user: req.user, chat: chatObj, item: body });
                     }
                 } else {
                     //chat not present
+                    res.redirect('/fetchForBuyer');
                 }
             }
         }
     );
-    res.redirect('/fetchForBuyer');
 });
 
 // Code for creating a socket connection
