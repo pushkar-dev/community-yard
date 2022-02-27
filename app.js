@@ -56,7 +56,7 @@ mongoose.connect("mongodb://localhost:27017/CS"); //, {useNewUrlParser: true,use
 /////////       Schema Creation       //////////
 const itemSchema = new mongoose.Schema({
     // db1
-    itemName: String,
+    item_name: String,
     person_name: String,
     person_email: String,
     item_description: String,
@@ -68,8 +68,9 @@ const itemSchema = new mongoose.Schema({
 const msgSchema = new mongoose.Schema({
     buyer_name: String,
     msg: [{
-        time: Date,
+        // time: Date,
         conv: String,
+        msg_sender: String
     }]
 })
 const msg = mongoose.model('msg', msgSchema);
@@ -315,13 +316,13 @@ app.post("/addItem", upload.single('image'), function(req, res) {
     if (req.isAuthenticated()) {
         const item = req.body;
         console.log(item);
-        Item.findOne({ itemName: item.itemName, person_email: item.person_email },
+        Item.findOne({ item_name: item.item_name, person_email: item.person_email },
             function(err, foundList) {
                 console.log(foundList)
                 if (!err) {
                     if (!foundList || foundList.length == 0) {
                         const newItem = new Item({
-                            itemName: item.itemName,
+                            item_name: item.item_name,
                             person_name: item.person_name,
                             person_email: item.person_email,
                             item_description: item.item_description,
@@ -337,7 +338,7 @@ app.post("/addItem", upload.single('image'), function(req, res) {
                         });
 
                         const newChat = new Chat({
-                            item_name: item.itemName,
+                            item_name: item.item_name,
                             item_owner: item.person_email,
                             chats: [],
                         });
