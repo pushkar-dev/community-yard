@@ -209,7 +209,8 @@ app.get("/fetchForBuyer", function(req, res) {
             if (req.isAuthenticated()) {
                 res.render("itemsAvailable", { user: req.user, items: found });
             } else {
-                res.render("itemsAvailable", { user: null, items: found });
+                // res.render("itemsAvailable", { user: null, items: found });
+                res.redirect('/');
             }
         }
     });
@@ -249,18 +250,37 @@ app.get("/websiteStatus", function(req, res) {
         }
     });
 });
-app.get("/chat", function(req, res) {
+
+// const msgSchema = new mongoose.Schema({
+//     buyer_name: String,
+//     msg: [{
+//         time: Date,
+//         conv: String,
+//     }]
+// })
+// const msg = mongoose.model('msg', msgSchema);
+// const chatSchema = new mongoose.Schema({
+//     item_name: String,
+//     item_owner: String,
+//     chats: [msgSchema]
+// });
+app.post("/chatWithOwner", function(req, res) {
     const body = req.body;
+    console.log(body);
     Chat.findOne({ item_name: body.item_name, item_owner: body.item_owner },
         function(err, found) {
             if (err) console.log(err);
             else {
+                console.log(found);
                 if (found) {
                     const isAvail = false;
                     found.chats.forEach(function(chat, index) {
                         if (chat.buyer_name === req.user.name) {
                             isAvail = true;
-                            res.render("chat_room", { user: req.user, chat: chat });
+                            console.log(chat);
+                            console.log("huehhuheuue");
+
+                            // res.render("chat_room", { user: req.user, chat: chat });
                         }
                     });
                     if (!isAvail) {
@@ -269,12 +289,18 @@ app.get("/chat", function(req, res) {
                             msg: [],
                         };
                         found.chats.push(chatObj);
-                        res.render("chat_room", { user: req.user, chat: chatObj });
+                        console.log(chat);
+                        console.log("huehhuheuue");
+
+                        // res.render("chat_room", { user: req.user, chat: chatObj });
                     }
+                } else {
+                    //chat not present
                 }
             }
         }
     );
+    res.redirect('/fetchForBuyer');
 });
 
 // Code for creating a socket connection
@@ -308,21 +334,7 @@ app.post("/addItem", upload.single('image'), function(req, res) {
                                 console.log(err);
                             }
                         });
-                        //   const chatSchema = new mongoose.Schema({
-                        //     item_name: String,
-                        //     item_owner: String,
-                        //     chats: [
-                        //       {
-                        //         buyer_name: String,
-                        //         msg: [
-                        //           {
-                        //             time: Date,
-                        //             conv: String,
-                        //           },
-                        //         ],
-                        //       },
-                        //     ],
-                        //   });
+
                         const newChat = new Chat({
                             item_name: item.itemName,
                             item_owner: item.person_email,
@@ -334,8 +346,9 @@ app.post("/addItem", upload.single('image'), function(req, res) {
                             }
                         });
                         res.redirect('/fetchForBuyer');
+                    } else {
+                        res.redirect('/'); // redundant item upload
                     }
-                    res.redirect('/'); // redundant item upload
                 } // end of if
                 else {
                     res.redirect('/');
