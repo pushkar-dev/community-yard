@@ -261,19 +261,20 @@ app.get("/newAdd", function (req, res) {
     res.redirect("/");
   }
 });
+
 // Logout
 app.get("/logout", function (req, res) {
   req.logout();
   res.redirect("/");
 });
 
-// app.get("/dev", function(req, res) {
-//     if (req.isAuthenticated()) {
-//         res.render("comingSoon", { user: req.user });
-//     } else {
-//         res.render("comingSoon", { user: null });
-//     }
-// });
+app.get("/dev", function(req, res) {
+    if (req.isAuthenticated()) {
+        res.render("comingSoon", { user: req.user });
+    } else {
+        res.render("comingSoon", { user: null });
+    }
+});
 
 app.get("/websiteStatus", function (req, res) {
   Website.find({}, function (err, websites) {
@@ -433,7 +434,7 @@ app.post("/buyerSendMsg", function (req, res) {
               isAvail = true;
               const obj = {
                 conv: body.msg,
-                sender: req.user.email,
+                msg_sender: req.user.email,
               };
               chat.msg.push(obj);
               found.save();
@@ -483,7 +484,7 @@ app.post("/ownerSendMsg", function (req, res) {
               isAvail = true;
               const obj = {
                 conv: body.msg,
-                sender: req.user.email,
+                msg_sender: req.user.email,
               };
               chat.msg.push(obj);
               found.save();

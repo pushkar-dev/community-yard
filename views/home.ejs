@@ -10,6 +10,8 @@
         <div class="overflow-auto h-50 bg-light rounded p-4">
                 <% chats.forEach(function(single_item_chat){%>
                     <div class="d-flex align-items-center border-bottom py-3">
+                        <% if(single_item_chat.chats.length!==0){%>
+                        
                     Item: <%= single_item_chat.item_name %>
                     <% single_item_chat.chats.forEach(function(individual,i){ %>
                         <div class="w-100 ms-3">
@@ -29,6 +31,8 @@
                             <span> <%# individual.msg[individual.msg.length-1].conv %>  </span>
                         </div>
                     <% }) %>  
+                    <% } %>
+
                 </div>
                 <% }) %>  
             </div>
