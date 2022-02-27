@@ -1,5 +1,5 @@
 # <span style="color:#1cb5ed;">Community Yard</span>
-## Link to videos : ![link](https://drive.google.com/drive/folders/1ZkOfqntuFXJlLLcz8UrneaQs1YJoqqwQ?usp=sharing)
+## Link to videos : [link](https://drive.google.com/drive/folders/1ZkOfqntuFXJlLLcz8UrneaQs1YJoqqwQ?usp=sharing)
 <span style="color:#14c759;">One Place to barter your oldcollege goods, get new one in exchange.</span>
 
 ![Home-Page](https://user-images.githubusercontent.com/79042628/155893010-f0ffea8f-5469-460e-94d7-8c5a7031d028.png)
