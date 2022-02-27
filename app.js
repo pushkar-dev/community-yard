@@ -8,6 +8,8 @@ const ejs = require("ejs");
 const mongoose = require("mongoose");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const findOrCreate = require("mongoose-findorcreate");
+var http = require("http").Server(app);
+var io = require("socket.io")(http);
 require("https").globalAgent.options.rejectUnauthorized = false;
 // const mongoStore = require("connect-mongo");
 
@@ -269,6 +271,10 @@ app.get("/chat", function (req, res) {
   );
 });
 
+// Code for creating a socket connection
+io.on("connection", () => {
+  console.log("a user is connected");
+});
 ////////////////////////////////////////////////////////
 ////////////////// POST REQUESTS ///////////////////////
 ////////////////////////////////////////////////////////
