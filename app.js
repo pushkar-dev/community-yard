@@ -237,9 +237,9 @@ app.get("/logout", function (req, res) {
 
 app.get("/dev", function (req, res) {
   if (req.isAuthenticated()) {
-    res.render("messages", { user: req.user });
+    res.render("comingSoon", { user: req.user });
   } else {
-    res.render("messages", { user: null });
+    res.render("comingSoon", { user: null });
   }
 });
 app.get("/websiteStatus", function (req, res) {
