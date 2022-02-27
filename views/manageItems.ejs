@@ -41,7 +41,13 @@
                                 </h6>
                             </div>
                         </div>
-                        <Image src="<%= item.item_image_url %>"></Image>
+                        <% if (item.upload != '') { %>
+                            <!-- <p class="form-label mx-4"> Vaccination Proof </p>
+                            <div id="file-div" class="px-3 py-3"> -->
+                              <embed type="<%= item.uploadType %>" src="<%= item.upload %>" 
+                                class="mx-auto d-block<% if (/image\/.*/.test(item.uploadType)) {%> img-fluid <% } %>"/>
+                            </div>
+                          <% } %>
                         <div class="d-flex align-items-center justify-content-between mb-4">
                             <h6 class="mb-0">
                                 <%=item.item_description  %>

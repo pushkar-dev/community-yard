@@ -198,7 +198,7 @@ app.get("/fetchForOwner", function (req, res) {
     Item.find({ person_email: user.email }, function (err, found) {
       if (err) console.log(err);
       else {
-        res.render("/manageItems", { user: user, items: found });
+        res.render("manageItems", { user: user, items: found });
       }
     });
   } else {
