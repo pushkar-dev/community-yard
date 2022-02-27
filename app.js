@@ -173,19 +173,34 @@ app.get(
 );
 
 // Home route
+// const msgSchema = new mongoose.Schema({
+//     buyer_email: String,
+//     msg: [
+//       {
+//         conv: String,
+//         msg_sender: String,
+//       },
+//     ],
+//   });
+//   const msg = mongoose.model("msg", msgSchema);
+//   const chatSchema = new mongoose.Schema({
+//     item_name: String,
+//     owner_email: String,
+//     chats: [msgSchema],
+//   });  
 app.get("/", function (req, res) {
   if (req.isAuthenticated()) {
-    res.render("home", { user: req.user, msgs: [] });
-    // Chat.findOne({owner_email: req.user.email },
-    //   function(err, found) {
-    //       console.log(found);
-    //       if (err) console.log(err);
-    //       else {
-    // res.render("home", { user: req.user,msgs:found });
-    //       }
-    //     });
+    // res.render("home", { user: req.user, msgs: [] });
+    Chat.find({owner_email: req.user.email },
+      function(err, found) {
+          console.log(found);
+          if (err) console.log(err);
+          else {
+            res.render("home", { user: req.user,chats:found });
+          }
+        });
   } else {
-    res.render("home", { user: null, msgs: [] });
+    res.render("home", { user: null, chats:[] });
   }
 });
 
@@ -418,7 +433,7 @@ app.post("/buyerSendMsg", function (req, res) {
               isAvail = true;
               const obj = {
                 conv: body.msg,
-                sender: req.user.name,
+                sender: req.user.email,
               };
               chat.msg.push(obj);
               found.save();
@@ -453,20 +468,22 @@ app.post("/buyerSendMsg", function (req, res) {
 });
 // When owner sends a message to buyer
 app.post("/ownerSendMsg", function (req, res) {
+  // console.log(req.body);
   if (req.isAuthenticated()) {
     const body = req.body;
     Chat.findOne(
-      { item_name: body.item_name, owner_email: req.user.name },
+      { item_name: body.item_name, owner_email: req.user.email },
       function (err, found) {
         if (err) console.log(err);
         else {
+          console.log(found);
           let isAvail = false;
           found.chats.forEach(function (chat, i) {
             if (chat.buyer_email === body.buyer_email) {
               isAvail = true;
               const obj = {
                 conv: body.msg,
-                sender: req.user.name,
+                sender: req.user.email,
               };
               chat.msg.push(obj);
               found.save();
