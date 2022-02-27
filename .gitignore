@@ -1,6 +1,6 @@
 website_list.txt
 /node_modules/
-/upload_docs/
+/uploaded_docs/
 app2.js
 test.ejs
 test.html

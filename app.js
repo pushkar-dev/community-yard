@@ -315,8 +315,23 @@ app.post("/addItem", upload.single('image'),function (req, res) {
               console.log(err);
             }
           });
+        //   const chatSchema = new mongoose.Schema({
+        //     item_name: String,
+        //     item_owner: String,
+        //     chats: [
+        //       {
+        //         buyer_name: String,
+        //         msg: [
+        //           {
+        //             time: Date,
+        //             conv: String,
+        //           },
+        //         ],
+        //       },
+        //     ],
+        //   });
           const newChat = new Chat({
-            itemName: item.itemName,
+            item_name: item.itemName,
             item_owner: item.person_email,
             chats: [],
           });
