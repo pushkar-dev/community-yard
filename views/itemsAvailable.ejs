@@ -60,10 +60,10 @@
                             <h6 class="mb-0">Phone :
                                 <%=item.person_contact %>
                             </h6>
-                            <% if(item.person_email!==user.email){%>
+                            <% if(item.owner_email!==user.email){%>
                                 <form method="POST" action="/chatWithOwner">
                                     <input type="text" name="item_name" value="<%= item.item_name %>" hidden />
-                                    <input type="text" name="item_owner" value="<%= item.person_email %>" hidden />
+                                    <input type="text" name="item_owner" value="<%= item.owner_email %>" hidden />
                                     <input type="text" name="buyer_email" value="<%= user.email %>" hidden />
                                     <button type="submit" class="btn btn-info">Contact Owner</button>
                                 </form>

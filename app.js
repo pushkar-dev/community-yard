@@ -43,7 +43,7 @@ var storage = multer.diskStorage({
     filename: function(req, file, cb) {
         cb(
             null,
-            req.body.person_email +
+            req.body.owner_email +
             "__" +
             String(Date.now()) +
             "." +
@@ -64,7 +64,7 @@ const itemSchema = new mongoose.Schema({
     // db1
     item_name: String,
     person_name: String,
-    person_email: String,
+    owner_email: String,
     item_description: String,
     item_price: String,
     person_contact: String,
@@ -203,7 +203,7 @@ app.get("/fetchForOwner", function(req, res) {
     //manage
     if (req.isAuthenticated()) {
         const user = req.user;
-        Item.find({ person_email: user.email }, function(err, found) {
+        Item.find({ owner_email: user.email }, function(err, found) {
             if (err) console.log(err);
             else {
                 res.render("manageItems", { user: user, items: found });
@@ -312,7 +312,7 @@ app.post("/chatWithBuyer", function(req, res) {
                     found.chats.forEach(function(chat, index) {
                         if (chat.buyer_name === body.buyer_name) {
                             isAvail = true;
-                            res.render("chat_room", { user: req.user, chat: chat });
+                            res.render("chat_room", { user: req.user, chat: chat, item: body  });
                         }
                     });
                     if (!isAvail) {
@@ -322,7 +322,7 @@ app.post("/chatWithBuyer", function(req, res) {
                         };
                         found.chats.push(chatObj);
                         found.save();
-                        res.render("chat_room", { user: req.user, chat: chatObj });
+                        res.render("chat_room", { user: req.user, chat: chatObj, item: body  });
                     }
                 }
             }
@@ -341,13 +341,13 @@ app.post("/addItem", upload.single("image"), function(req, res) {
     if (req.isAuthenticated()) {
         const item = req.body;
         console.log(item);
-        Item.findOne({ item_name: item.item_name, person_email: item.person_email },
+        Item.findOne({ item_name: item.item_name, owner_email: item.owner_email },
             function(err, foundList) {
                 if (!err) {
                     const newItem = new Item({
                         item_name: item.item_name,
                         person_name: item.person_name,
-                        person_email: item.person_email,
+                        owner_email: item.owner_email,
                         item_description: item.item_description,
                         item_price: item.item_price,
                         person_contact: item.person_contact,
@@ -361,7 +361,7 @@ app.post("/addItem", upload.single("image"), function(req, res) {
                     });
                     const newChat = new Chat({
                         item_name: item.item_name,
-                        item_owner: item.person_email,
+                        item_owner: item.owner_email,
                         chats: [],
                     });
                     newChat.save(function(err) {
@@ -380,6 +380,7 @@ app.post("/addItem", upload.single("image"), function(req, res) {
 
 // When buyer sends a message to owner
 app.post("/buyerSendMsg", function(req,res){
+  console.log(req.body);
   if(req.isAuthenticated()){
     const body = req.body;
     Chat.findOne({item_name:body.item_name, item_owner:body.item_owner}, function(err,found){
