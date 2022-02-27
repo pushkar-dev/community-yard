@@ -49,8 +49,17 @@
    ```sh
    npm install
    ```
-3. Run the code.
+3. Make Upload Directory
+    ```sh
+    mkdir uploaded_docs
+    ```
+4. Setup OAuth for your account and copy credentials to .env file
+    ```sh
+    touch .env
+    ```
+    copy info and save file.
+4. Run the code.
    ```sh
     node app.js
    ```
-4. [Open Url](http://localhost:8080/)
+5. [Open Url](http://localhost:8080/)
