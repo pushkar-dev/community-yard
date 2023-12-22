@@ -49,11 +49,8 @@
    ```sh
    npm install
    ```
-3. Make Upload Directory
-    ```sh
-    mkdir uploaded_docs
-    ```
-4. Setup OAuth for your account and copy credentials to .env file
+
+3. Setup OAuth for your account and copy credentials to .env file
     ```sh
     touch .env
     ```
