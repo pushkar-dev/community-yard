@@ -8,7 +8,7 @@
     <% chat.msg.forEach(function(msgs,i){ %>
         <% if (msgs.msg_sender === user.email) { %>
             <div class="d-flex flex-row-reverse align-items-center mb-border-bottom py-3" style="background-color: #FFB6C1;">
-                <img class="rounded-circle flex-shrink-0" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                <img class="rounded-circle flex-shrink-0" src="/img/user.jpg" alt="" style="width: 40px; height: 40px;">
                 <div class="w-100 ms-3 ">
                     <div class="d-flex w-100 justify-content-between flex-row-reverse">
                         <h6 class="mb-0"><%= msgs.msg_sender %> </h6>
@@ -19,7 +19,7 @@
             <hr>
             <% }else{ %>
                 <div class="d-flex align-items-center mb-border-bottom py-3" style="background-color: #AFEEEE;">
-                    <img class="rounded-circle flex-shrink-0" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                    <img class="rounded-circle flex-shrink-0" src="/img/user.jpg" alt="" style="width: 40px; height: 40px;">
                     <div class="w-100 ms-3 ">
                         <div class="d-flex w-100 justify-content-between flex-row-reverse">
                             <h6 class="mb-0"><%= msgs.msg_sender %> </h6>

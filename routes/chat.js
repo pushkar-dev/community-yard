@@ -100,11 +100,7 @@ chatRoute.post("/buyerSendMsg", function (req, res) {
               };
               chat.msg.push(obj);
               found.save();
-              res.render("chat_room", {
-                user: req.user,
-                chat: chat,
-                item: body,
-              });
+              res.redirect(`/chatWithOwner/${found._id}`);
             }
           });
           if (!isAvail) {
@@ -150,11 +146,7 @@ chatRoute.post("/ownerSendMsg", function (req, res) {
               };
               chat.msg.push(obj);
               found.save();
-              res.render("chat_room", {
-                user: req.user,
-                chat: chat,
-                item: body,
-              });
+              res.redirect(`/chatWithBuyer/${found._id}`);
             }
           });
           if (!isAvail) {
@@ -180,4 +172,59 @@ chatRoute.post("/ownerSendMsg", function (req, res) {
   }
 });
 
+chatRoute.get("/chatWithOwner/:id", (req,res)=>{
+  if (req.isAuthenticated()) {
+    chat_id = req.params.id;
+    Chat.findOne(
+      { _id: chat_id },
+      (err,found)=>{
+        if (err) {
+          console.log(err);
+        }
+        else{
+          if (found){
+            found.chats.forEach((chat,index)=>{
+              if (chat.buyer_email === req.user.email){
+                res.render("chat_room",{
+                  user: req.user,
+                  chat: chat,
+                  item: {item_name: found.item_name, owner_email: found.owner_email, buyer_email:chat.buyer_email}
+                });
+              }
+            })
+          }
+        }
+      });
+    } else {
+      res.redirect("/");
+    }
+});
+
+chatRoute.get("/chatWithBuyer/:id", (req,res)=>{
+  if (req.isAuthenticated()) {
+    chat_id = req.params.id;
+    Chat.findOne(
+      { _id: chat_id },
+      (err,found)=>{
+        if (err) {
+          console.log(err);
+        }
+        else{
+          if (found){
+            found.chats.forEach((chat,index)=>{
+              if (found.owner_email === req.user.email){
+                res.render("chat_room",{
+                  user: req.user,
+                  chat: chat,
+                  item: {item_name: found.item_name, owner_email: found.owner_email, buyer_email:chat.buyer_email}
+                });
+              }
+            })
+          }
+        }
+      });
+    } else {
+      res.redirect("/");
+    }
+});
 module.exports =  chatRoute;
