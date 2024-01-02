@@ -28,6 +28,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+mongoose.set('strictQuery', true);
 mongoose.connect(String(process.env.DB_URL),{ useNewUrlParser: true , useUnifiedTopology: true}); // Running on a remote server
 
 const User = require("./schema/user");
