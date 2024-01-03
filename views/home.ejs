@@ -27,7 +27,9 @@
                                 <input type="text" name="owner_email" value="<%= user.email %>" hidden />
                                 <input type="text" name="buyer_email" value="<%= individual.buyer_email %>" hidden />
                                 <div class="form-group w-100">
+                                    <% if(individual.msg.length!==0){%>
                                     <div style="margin-top:16px;margin-bottom:16px;"><h6><%= individual.msg[individual.msg.length-1].conv %></h6></div>
+                                    <% } %>
                                     <button type="submit" class="btn btn-primary btn-flat">Go to Buyer's chat</button>
                                 </div>
                             </form>
