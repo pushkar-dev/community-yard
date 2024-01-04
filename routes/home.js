@@ -35,7 +35,11 @@ homeRoute.get("/scrapyard", function (req, res) {
 });
 
 homeRoute.get("/logout", function (req, res) {
-    req.logout();
+    req.logout((err) => {
+      if (err) {
+        console.log(err);
+      }
+    });
     res.redirect("/");
 });
   
