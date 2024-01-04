@@ -164,7 +164,7 @@ chatRoute.post("/ownerSendMsg", function (req, res) {
               };
               chat.msg.push(obj);
               found.save();
-              res.redirect(`/chatWithBuyer/${found._id}`);
+              res.redirect(`/chatWithBuyer/${found._id}-${chat._id}`);
             }
           });
           if (!isAvail) {
@@ -222,17 +222,19 @@ chatRoute.get("/chatWithOwner/:id", (req,res)=>{
 
 chatRoute.get("/chatWithBuyer/:id", (req,res)=>{
   if (req.isAuthenticated()) {
-    chat_id = req.params.id;
+    idArray = req.params.id.split('-');
+    itemChat_id = idArray[0];
+    chat_id = idArray[1];
     Chat.findOne(
-      { _id: chat_id },
+      { _id: itemChat_id },
       (err,found)=>{
         if (err) {
           console.log(err);
         }
         else{
           if (found){
-            found.chats.forEach(async (chat,index)=>{
-              if (found.owner_email === req.user.email){
+            found.chats.forEach(async (chat,index)=>{       
+              if (found.owner_email === req.user.email && chat._id.toString() === chat_id){
                 const ownerPic = await ownerpic(chat.buyer_email);
                 res.render("chat_room",{
                   user: req.user,
