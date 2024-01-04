@@ -1,28 +1,26 @@
 <%- layout('layouts/boilerplate') %>
 <div id="top"></div>
 
-<div class="d-flex align-items-center justify-content-between mb-4 pt-4 px-4">
-    <div class="ms-3">
-        <p class="mb-2">Advertisements</p>
-    </div>
-    <div class="col-sm-6 col-xl-3">
-        <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-            <i class="fa text-primary">Sort by</i>
-            <div class="ms-3">
-                <select name="Sort" id="sortby">
-                    <option value="price">Price</option>
-                    <option value="pricedesc">Price Descending</option>
-                    <option value="recent">Date</option>
-                </select>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Advertisements -->
 <div class="container-fluid pt-4 px-4">
     <div class="row g-4">
-        <% items.forEach(function(item){ %>
+        <div class="d-flex align-items-center justify-content-between mb-4 pt-4">
+            <div class="ms-3">
+                <p class="mb-2">Advertisements</p>
+            </div>
+            <div class="col-sm-6 col-xl-3">
+                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                    <i class="fa text-primary">Sort by</i>
+                    <div class="ms-3">
+                        <select name="Sort" id="sortby">
+                            <option value="price">Price</option>
+                            <option value="pricedesc">Price Descending</option>
+                            <option value="recent">Date</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% items.forEach(function(item) { %>
             <div class="col-sm-12 col-xl-6 advert">
                 <!-- Advertise block -->
                 <div class="bg-light text-center rounded p-4">
@@ -70,9 +68,9 @@
         <% }) %>
     </div>
 </div>
-<!-- Advertisements end -->
 
 <!-- ... (your existing script imports) ... -->
 
 </body>
 </html>
+
