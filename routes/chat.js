@@ -2,28 +2,16 @@ const {Router}= require('express');
 const chatRoute=Router();
 const Chat= require("../schema/message");
 
-// function to extract details of owner's pic
-async function ownerpic(email){
-  try{
-    const user = await User.findOne({email: email});
-    return user.pic;
-  }
-  catch(err){
-    console.log(err);
-  }
-}
-
 chatRoute.post("/chatWithOwner", function (req, res) {
     const body = req.body;
     Chat.findOne(
       { item_name: body.item_name, owner_email: body.owner_email },
-      async function (err, found) {
+      function (err, found) {
         if (err) console.log(err);
         else {
           console.log(found);
           if (found) {
             let isAvail = false;
-            const ownerPic = await ownerpic(body.owner_email);
             found.chats.forEach(function (chat, index) {
               if (chat.buyer_email === req.user.email) {
                 isAvail = true;
@@ -31,7 +19,6 @@ chatRoute.post("/chatWithOwner", function (req, res) {
                   user: req.user,
                   chat: chat,
                   item: body,
-                  ownerPic: ownerPic,
                 });
               }
             });
@@ -46,7 +33,6 @@ chatRoute.post("/chatWithOwner", function (req, res) {
                 user: req.user,
                 chat: chatObj,
                 item: body,
-                ownerPic: ownerPic,
               });
             }
           }
@@ -60,12 +46,11 @@ chatRoute.post("/chatWithBuyer", function (req, res) {
         const body = req.body;
         Chat.findOne(
         { item_name: body.item_name, owner_email: req.user.email },
-        async function (err, found) {
+        function (err, found) {
         if (err) console.log(err);
         else {
             if (found) {
             let isAvail = false;
-            const ownerPic = await ownerpic(body.buyer_email);
             found.chats.forEach(function (chat, index) {
                 if (chat.buyer_email === body.buyer_email) {
                 isAvail = true;
@@ -73,7 +58,6 @@ chatRoute.post("/chatWithBuyer", function (req, res) {
                     user: req.user,
                     chat: chat,
                     item: body,
-                    ownerPic: ownerPic,
                 });
                 }
             });
@@ -88,7 +72,6 @@ chatRoute.post("/chatWithBuyer", function (req, res) {
                 user: req.user,
                 chat: chatObj,
                 item: body,
-                ownerPic: ownerPic,
                 });
             }
             }
@@ -200,14 +183,12 @@ chatRoute.get("/chatWithOwner/:id", (req,res)=>{
         }
         else{
           if (found){
-            found.chats.forEach(async (chat,index)=>{
+            found.chats.forEach((chat,index)=>{
               if (chat.buyer_email === req.user.email){
-                const ownerPic = await ownerpic(found.owner_email);
                 res.render("chat_room",{
                   user: req.user,
                   chat: chat,
                   item: {item_name: found.item_name, owner_email: found.owner_email, buyer_email:chat.buyer_email}
-                  ownerPic: ownerPic,
                 });
               }
             })
@@ -230,14 +211,12 @@ chatRoute.get("/chatWithBuyer/:id", (req,res)=>{
         }
         else{
           if (found){
-            found.chats.forEach(async (chat,index)=>{
+            found.chats.forEach((chat,index)=>{
               if (found.owner_email === req.user.email){
-                const ownerPic = await ownerpic(found.owner_email);
                 res.render("chat_room",{
                   user: req.user,
                   chat: chat,
                   item: {item_name: found.item_name, owner_email: found.owner_email, buyer_email:chat.buyer_email}
-                  ownerPic: ownerPic,
                 });
               }
             })
