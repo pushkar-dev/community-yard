@@ -7,33 +7,31 @@
     <!-- reciever-->
     <% chat.msg.forEach(function(msgs,i){ %>
         <% if (msgs.msg_sender === user.email) { %>
-            <div class="d-flex flex-row-reverse align-items-center mb-border-bottom py-3" style="background-color: #FFB6C1;">
+            <div class="d-flex flex-row-reverse align-items-start mb-border-bottom py-2">
                 <img class="rounded-circle flex-shrink-0" src="<%= user.pic %>" alt="" style="width: 40px; height: 40px;">
-                <div class="w-100 ms-3 ">
-                    <div class="d-flex w-100 justify-content-between flex-row-reverse">
-                        <h6 class="mb-0"><%= msgs.msg_sender %> </h6>
+                <div class="d-flex flex-column py-2 px-3 me-1 message-box" style="background-color: #FFB6C1;">
+                    <div class="d-flex align-self-end ">
+                        <h6 class="mb-2"><%= msgs.msg_sender %> </h6>
                     </div>
-                    <span><%= msgs.conv %> </span>
+                    <span style="color: #47555c;"><%= msgs.conv %> </span>
                 </div>
             </div>
-            <hr>
             <% }else{ %>
-                <div class="d-flex align-items-center mb-border-bottom py-3" style="background-color: #AFEEEE;">
+                <div class="d-flex align-items-start mb-border-bottom py-2">
                     <img class="rounded-circle flex-shrink-0" src="<%= ownerPic %>" alt="" style="width: 40px; height: 40px;">
-                    <div class="w-100 ms-3 ">
-                        <div class="d-flex w-100 justify-content-between flex-row-reverse">
-                            <h6 class="mb-0"><%= msgs.msg_sender %> </h6>
+                    <div class="d-flex flex-column py-2 px-3 ms-1 message-box" style="background-color: #AFEEEE;"">
+                        <div class="d-flex">
+                            <h6 class="mb-2"><%= msgs.msg_sender %> </h6>
                         </div>
-                        <span><%= msgs.conv %> </span>
+                        <span style="color: #47555c;"><%= msgs.conv %> </span>
                     </div>
                 </div>
-                <hr>
             <% } %> 
     <% }) %>
     <!--sender-->
     
 
-    <footer class="d-flex footer direct-chat direct-chat-primary">
+    <footer class="d-flex direct-chat direct-chat-primary">
         <div class="input-group">
             <% if (user.email !== item.owner_email) { %>
                 <form class="input-group" action="/buyerSendMsg" method="POST">
