@@ -33,7 +33,7 @@
 
 <body>
     <!-- Sidebar Start -->
-    <div class=" position-relative bg-white d--inline-flex p-1">
+    <div class="position-relative bg-white d-inline-flex p-1 mx-auto">
         <!-- Spinner Start -->
         <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
             <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
@@ -43,36 +43,6 @@
         <!-- Spinner End -->
         <div class="sidebar pe-4 pb-3">
             <nav class="navbar bg-light navbar-light">
-                <a href="#" class="navbar-brand mx-4 mb-3">
-                    <h3 class="text-primary"><i class="fa"></i>Community <br> Yard</h3>
-                </a>
-
-                <% if(user !== null) {%>
-                    <div class="d-flex align-items-center ms-4 mb-4">
-                        <div class="position-relative">
-                            <img class="rounded-circle" src="<%= user.pic %>" alt="" style="width: 40px; height: 40px;">
-                            <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1">
-                            </div>
-                        </div>
-                        <div class="ms-3">
-                            <h6 class="mb-0">User</h6>
-                            <span><%= user.name %></span>
-                        </div>
-                    </div>
-                    <% }else{%>
-                        <div class="d-flex align-items-center ms-4 mb-4">
-                            <div class="position-relative">
-                                <img class="rounded-circle" src="/img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                                <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1">
-                                </div>
-                            </div>
-                            <div class="ms-3">
-                                <h6 class="mb-0">User</h6>
-                                <span>Not Logged in</span>
-                            </div>
-                        </div>
-                        <% } %>
-
                 <div class="navbar-nav w-100">
                     <a href="/" class="nav-item nav-link active">Home</a>
                     <div class="nav-item">
@@ -167,23 +137,38 @@
                         <a href="#" class="dropdown-item text-center">See all notifications</a>
                     </div> -->
                 </div>
-                <div class="nav-item dropdown">
-                    <% if(user !== null) {%>
-
+                <div class="navbar-brand mx-4 mb-3">
+                    <h3 class="text-primary"><i class="fa"></i>Community Yard</h3>
+                </div>
+                <div class="d-flex align-items-center ms-4 mb-4">
+                    <% if(user !== null) { %>
+                        <div class="position-relative">
+                            <a href="#" data-bs-toggle="dropdown"></a>
+                            <img class="rounded-circle" src="<%= user.pic %>" alt="" style="width: 40px; height: 40px;">
+                            <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1">
+                            </div>
+                        </div>
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                        <img class="rounded-circle me-lg-2" src="<%= user.pic %>" alt=""
-                            style="width: 40px; height: 40px;">
-                        <span class="d-none d-lg-inline-flex"><%= user.name %> </span>
-                    </a>
+                            <span class="d-none d-lg-inline-flex"><%= user.name %> </span>
+                        </a>
                         <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
                             <a href="/logout" class="dropdown-item">Log Out</a>
                         </div>
-                        <% }else{%>
-                            <a href="auth/google" class="nav-link dropdown-toggle">
-                                <span class="d-none d-lg-inline-flex">Sign-in</span>
-                            </a>
-                            <% } %>
-
+                    <% } else { %>
+                        <a href="auth/google" data-bs-toggle="dropdown"></a>
+                        <div class="position-relative">
+                            <img class="rounded-circle" src="/img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                            <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1">
+                            </div>
+                        </div>
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                            <h6>User</h6>
+                            <span class="d-none d-lg-inline-flex">User Not Log In </span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
+                            <a href="auth/google" class="dropdown-item">Sign In with Google</a>
+                        </div>
+                    <% } %>
                 </div>
             </div>
         </nav>
