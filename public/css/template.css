@@ -279,4 +279,5 @@
 .message-box{ 
     max-width: 50%; 
     border-radius: 10px;
+    overflow-wrap: break-word;
 }
