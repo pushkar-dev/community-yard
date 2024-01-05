@@ -31,7 +31,7 @@
     <!--sender-->
     
 
-    <footer class="d-flex direct-chat direct-chat-primary">
+    <footer class="d-flex footer direct-chat direct-chat-primary" style="position: sticky; bottom: 0;">
         <div class="input-group">
             <% if (user.email !== item.owner_email) { %>
                 <form class="input-group" action="/buyerSendMsg" method="POST">
