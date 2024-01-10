@@ -1,8 +1,8 @@
 const { Router } = require('express');
 const profileRoute = Router();
 
-profileRoute.get('/profile/:uname', (req, res) => {
-  username = req.params.uname;
+profileRoute.get('/profile/:username', (req, res) => {
+  username = req.params.username;
   res.render('profile',{user: req.user});
 });
 

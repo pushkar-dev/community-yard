@@ -7,7 +7,7 @@ const User= require("../schema/user");
 async function fetchData(email){
   try{
     const user = await User.findOne({email: email});
-    return {pic: user.pic,name: user.name};
+    return {pic: user.pic,username: user.username};
   }
   catch(err){
     console.log(err);
