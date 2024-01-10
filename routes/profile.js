@@ -3,7 +3,7 @@ const profileRoute = Router();
 
 profileRoute.get('/profile/:uname', (req, res) => {
   username = req.params.uname;
-  res.send(`Welcome to ${username}'s profile page`);
+  res.render('profile',{user: req.user});
 });
 
 module.exports = profileRoute;
