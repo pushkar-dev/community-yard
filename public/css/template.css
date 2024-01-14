@@ -9,11 +9,22 @@
     position: fixed;
     display: none;
     right: 45px;
-    bottom: 45px;
+    bottom: 105px;
     z-index: 99;
 }
 
+.message-box { 
+    max-width: 50%; 
+    border-radius: 10px;
+    overflow-wrap: break-word;
+}
 
+.chat-btn-bottom {
+    position: fixed;
+    right: 45px;
+    bottom: 45px;
+    z-index: 99;
+}
 /*** Spinner ***/
 #spinner {
     opacity: 0;
@@ -274,10 +285,4 @@
 .testimonial-carousel .owl-dot.active {
     background: var(--dark);
     border-color: var(--primary);
-}
-
-.message-box{ 
-    max-width: 50%; 
-    border-radius: 10px;
-    overflow-wrap: break-word;
 }
