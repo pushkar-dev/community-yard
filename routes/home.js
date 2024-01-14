@@ -19,21 +19,6 @@ homeRoute.get("/", function (req, res) {
     }
 });
 
-// Scrapyard
-homeRoute.get("/scrapyard", function (req, res) {
-    if (req.isAuthenticated()) {
-      const user = req.user;
-      Item.find({}, function (err, found) {
-        if (err) console.log(err);
-        else {
-          res.render("home", { user: user, ads: found });
-        }
-      });
-    } else {
-      res.render("home", { user: null });
-    }
-});
-
 homeRoute.get("/logout", function (req, res) {
     req.logout((err) => {
       if (err) {
