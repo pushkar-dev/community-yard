@@ -11,11 +11,11 @@ homeRoute.get("/", function (req, res) {
             console.log(found);
             if (err) console.log(err);
             else {
-              res.render("home", { user: req.user,chats:found });
+              res.render("chat_page", { user: req.user,chats:found });
             }
           });
     } else {
-      res.render("home", { user: null, chats:[] });
+      res.render("chat_page", { user: null, chats:[] });
     }
 });
 
