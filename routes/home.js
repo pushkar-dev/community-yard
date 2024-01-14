@@ -4,18 +4,17 @@ const Chat = require("../schema/message");
 const Item = require("../schema/item");
 
 homeRoute.get("/", function (req, res) {
-    if (req.isAuthenticated()) {
-      // res.render("home", { user: req.user, msgs: [] });
-      Chat.find({owner_email: req.user.email },
-        function(err, found) {
-            console.log(found);
-            if (err) console.log(err);
-            else {
-              res.render("chat_page", { user: req.user,chats:found });
-            }
-          });
+  if (req.isAuthenticated()) {
+    Item.find({}, function (err, found) {
+    if (err) {
+        console.log(err);
+        res.redirect("/");
     } else {
-      res.render("chat_page", { user: null, chats:[] });
+        res.render("itemsAvailable", { user: req.user, items: found });
+    }
+    });
+    } else {
+      res.render('home', {user: null});
     }
 });
 
