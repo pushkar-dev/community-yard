@@ -16,25 +16,5 @@ fetchRoute.get("/fetchForOwner", function (req, res) {
       res.redirect("/");
     }
 });
-  
-fetchRoute.get("/fetchForBuyer", function (req, res) {
-    // items available
-    if (req.isAuthenticated()) {
-        Item.find({}, function (err, found) {
-        if (err) {
-            console.log(err);
-            res.redirect("/");
-        } else {
-            if (req.isAuthenticated()) {
-            res.render("itemsAvailable", { user: req.user, items: found });
-            } else {
-            res.render("itemsAvailable", { user: null, items: found });
-            }
-        }
-        });
-    } else {
-        res.redirect("/");
-    }
-});
 
 module.exports = fetchRoute;
