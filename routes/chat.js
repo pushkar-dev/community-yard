@@ -14,6 +14,22 @@ async function ownerpic(email){
   }
 }
 
+// Chat page for owner
+chatRoute.get("/chat", function (req, res) {
+  if (req.isAuthenticated()) {
+    Chat.find({owner_email: req.user.email },
+      function(err, found) {
+          console.log(found);
+          if (err) console.log(err);
+          else {
+            res.render("home", { user: req.user,chats:found });
+          }
+        });
+  } else {
+    res.redirect('/');
+  }
+});
+
 chatRoute.post("/chatWithOwner", function (req, res) {
     const body = req.body;
     Chat.findOne(
