@@ -108,11 +108,10 @@ addRoute.post("/deleteAd", function (req, res) {
                 else console.log("Item deleted");
               }
             );
+            res.redirect("/");
           }
         }
       );
-
-      res.redirect("/");
     } else {
       res.redirect("/");
     }
