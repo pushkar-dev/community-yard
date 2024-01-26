@@ -1,2 +1,9 @@
 <% layout('layouts/boilerplate') %>
-  <h1>Welcome to profile page</h1>
+  <div class="d-flex">
+    <img class="rounded-circle ms-5 my-3" src="<%= user.pic %>" style="height: 150px; width: 150px;">
+    <div class="d-flex flex-column justify-content-center ms-3">
+      <div class="fs-3 fw-bold"><%= user.name %></div>
+      <div>Email: <%= user.email %></div>
+    </div>
+  </div>
+  
