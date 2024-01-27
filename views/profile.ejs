@@ -1,9 +1,77 @@
 <% layout('layouts/boilerplate') %>
   <div class="d-flex">
-    <img class="rounded-circle ms-5 my-3" src="<%= user.pic %>" style="height: 150px; width: 150px;">
+    <img class="rounded-circle ms-5 my-3" src="<%= profile_user.pic %>" style="height: 150px; width: 150px;">
     <div class="d-flex flex-column justify-content-center ms-3">
-      <div class="fs-3 fw-bold"><%= user.name %></div>
-      <div>Email: <%= user.email %></div>
+      <div class="fs-3 fw-bold"><%= profile_user.name %></div>
+      <div>Email: <%= profile_user.email %></div>
     </div>
   </div>
-  
+  <hr>
+  <div class="d-flex justify-content-start">
+    <div class="ms-4 fs-5 fw-medium">Items</div>
+  </div>
+  <% if (items.length !== 0) { %>
+    <div class="container-fluid pt-4 px-4">
+      <div class="row g-4 justify-content-start">
+        <% items.forEach(function(item){%>
+        <div class="col-sm-12 col-xl-6 advert">
+          <!-- Advertise block -->
+          <div class="bg-light text-center rounded p-4">
+            <div class="d-flex align-items-center justify-content-between mb-4">
+              <h6 class="mb-0"><%= item.item_name %></h6>
+              <div>
+                <h6>Ad by-</h6>
+                <a href=""> <%= item.person_name %> </a>
+              </div>
+            </div>
+            <% if (item.upload !='' ) { %>
+            <embed
+              type="<%= item.uploadType %>"
+              src="/<%= item.upload %>"
+              class="mx-auto d-block<% if (/image\/.*/.test(item.uploadType)) {%> img-fluid <% } %>"
+            />
+            <% } %>
+            <div class="d-flex align-items-center justify-content-between mb-4">
+              <h6 class="mb-0"><%=item.item_description %></h6>
+            </div>
+            <div class="d-flex align-items-center justify-content-between mb-4">
+              <h6 class="mb-0">Price: <%=item.item_price %></h6>
+              <h6 class="mb-0">Phone : <%=item.person_contact %></h6>
+              <% if(item.owner_email!==user.email){%>
+              <form method="POST" action="/chatWithOwner">
+                <input
+                  type="text"
+                  name="item_name"
+                  value="<%= item.item_name %>"
+                  hidden
+                />
+                <input
+                  type="text"
+                  name="owner_email"
+                  value="<%= item.owner_email %>"
+                  hidden
+                />
+                <input
+                  type="text"
+                  name="buyer_email"
+                  value="<%= user.email %>"
+                  hidden
+                />
+                <button type="submit" class="btn btn-info">Contact Owner</button>
+              </form>
+              <% } else { %>
+              <a href="/fetchForOwner">
+                <button type="submit" class="btn btn-info">Manage</button>
+              </a>
+              <% } %>
+            </div>
+          </div>
+        </div>
+        <% }) %>
+      </div>
+    </div>
+  <% } else { %>
+    <div class="d-flex justify-content-center">
+      <div class = "mt-5 fs-5 fw-bold">No items found</div>
+    </div>
+  <% } %>
