@@ -11,7 +11,7 @@
                 <a href="/profile/<%= user.username %>"><img class="rounded-circle flex-shrink-0" src="<%= user.pic %>" alt="" style="width: 40px; height: 40px;"></a>
                 <div class="d-flex flex-column py-2 px-3 me-1 message-box" style="background-color: #FFB6C1;">
                     <div class="d-flex align-self-end ">
-                        <h6 class="mb-2"><a href="/profile/<%= user.username %>"><%= msgs.msg_sender %> </a></h6>
+                        <h6 class="mb-2"><a href="/profile/<%= user.username %>" class="profile-link"><%= msgs.msg_sender %> </a></h6>
                     </div>
                     <span style="color: #47555c;"><%= msgs.conv %> </span>
                 </div>
@@ -21,7 +21,7 @@
                     <a href="/profile/<%= receiver.username %>"><img class="rounded-circle flex-shrink-0" src="<%= receiver.pic %>" alt="" style="width: 40px; height: 40px;"></a>
                     <div class="d-flex flex-column py-2 px-3 ms-1 message-box" style="background-color: #AFEEEE;"">
                         <div class="d-flex">
-                            <h6 class="mb-2"><a href="/profile/<%= receiver.username %>"><%= msgs.msg_sender %> </a></h6>
+                            <h6 class="mb-2"><a href="/profile/<%= receiver.username %>" class="profile-link"><%= msgs.msg_sender %> </a></h6>
                         </div>
                         <span style="color: #47555c;"><%= msgs.conv %> </span>
                     </div>
