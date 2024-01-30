@@ -25,6 +25,16 @@
     bottom: 45px;
     z-index: 99;
 }
+
+.profile-link {
+    color: inherit;
+    text-decoration: none;
+}
+
+.profile-link:hover {
+    text-decoration: underline;
+}
+
 /*** Spinner ***/
 #spinner {
     opacity: 0;

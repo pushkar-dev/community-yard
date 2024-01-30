@@ -58,6 +58,7 @@ const fetchRoute = require("./routes/fetch");
 const addRoute = require("./routes/addItem");
 const chatRoute = require("./routes/chat");
 const websiteRoute = require("./routes/website");
+const profileRoute = require("./routes/profile");
 
 app.use('/auth/google', authRoute);
 app.use("/", homeRoute);
@@ -65,6 +66,7 @@ app.use("/", fetchRoute);
 app.use("/", addRoute);
 app.use("/", chatRoute);
 app.use("/", websiteRoute);
+app.use("/", profileRoute);
 
 
 app.listen(process.env.PORT || 8080, function () {

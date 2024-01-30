@@ -4,10 +4,10 @@ const Chat= require("../schema/message");
 const User= require("../schema/user");
 
 // function to extract details of owner's pic
-async function ownerpic(email){
+async function fetchData(email){
   try{
     const user = await User.findOne({email: email});
-    return user.pic;
+    return {pic: user.pic,username: user.username};
   }
   catch(err){
     console.log(err);
@@ -40,7 +40,7 @@ chatRoute.post("/chatWithOwner", function (req, res) {
           console.log(found);
           if (found) {
             let isAvail = false;
-            const ownerPic = await ownerpic(body.owner_email);
+            const ownerData = await fetchData(body.owner_email);
             found.chats.forEach(function (chat, index) {
               if (chat.buyer_email === req.user.email) {
                 isAvail = true;
@@ -48,7 +48,7 @@ chatRoute.post("/chatWithOwner", function (req, res) {
                   user: req.user,
                   chat: chat,
                   item: body,
-                  ownerPic: ownerPic,
+                  receiver: ownerData,
                 });
               }
             });
@@ -63,7 +63,7 @@ chatRoute.post("/chatWithOwner", function (req, res) {
                 user: req.user,
                 chat: chatObj,
                 item: body,
-                ownerPic: ownerPic,
+                receiver: ownerData,
               });
             }
           }
@@ -82,7 +82,7 @@ chatRoute.post("/chatWithBuyer", function (req, res) {
         else {
             if (found) {
             let isAvail = false;
-            const ownerPic = await ownerpic(body.buyer_email);
+            const buyerData = await fetchData(body.buyer_email);
             found.chats.forEach(function (chat, index) {
                 if (chat.buyer_email === body.buyer_email) {
                 isAvail = true;
@@ -90,7 +90,7 @@ chatRoute.post("/chatWithBuyer", function (req, res) {
                     user: req.user,
                     chat: chat,
                     item: body,
-                    ownerPic: ownerPic,
+                    receiver: buyerData,
                 });
                 }
             });
@@ -105,7 +105,7 @@ chatRoute.post("/chatWithBuyer", function (req, res) {
                 user: req.user,
                 chat: chatObj,
                 item: body,
-                ownerPic: ownerPic,
+                receiver: buyerData,
                 });
             }
             }
@@ -219,12 +219,12 @@ chatRoute.get("/chatWithOwner/:id", (req,res)=>{
           if (found){
             found.chats.forEach(async (chat,index)=>{
               if (chat.buyer_email === req.user.email){
-                const ownerPic = await ownerpic(found.owner_email);
+                const ownerData = await fetchData(found.owner_email);
                 res.render("chat_room",{
                   user: req.user,
                   chat: chat,
                   item: {item_name: found.item_name, owner_email: found.owner_email, buyer_email:chat.buyer_email},
-                  ownerPic: ownerPic,
+                  receiver: ownerData,
                 });
               }
             })
@@ -251,12 +251,12 @@ chatRoute.get("/chatWithBuyer/:id", (req,res)=>{
           if (found){
             found.chats.forEach(async (chat,index)=>{       
               if (found.owner_email === req.user.email && chat._id.toString() === chat_id){
-                const ownerPic = await ownerpic(chat.buyer_email);
+                const buyerData = await fetchData(chat.buyer_email);
                 res.render("chat_room",{
                   user: req.user,
                   chat: chat,
                   item: {item_name: found.item_name, owner_email: found.owner_email, buyer_email:chat.buyer_email},
-                  ownerPic: ownerPic,
+                  receiver: buyerData,
                 });
               }
             })
