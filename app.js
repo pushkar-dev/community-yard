@@ -70,5 +70,5 @@ app.use("/", profileRoute);
 
 
 app.listen(process.env.PORT || 8080, function () {
-  console.log("Server running on port 8080");
+  console.log("Server running on port "+ process.env.PORT || 8080);
 });
