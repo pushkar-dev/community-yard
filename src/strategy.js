@@ -6,7 +6,7 @@ const strategy = new GoogleStrategy(
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
       // callbackURL: "https://community-scrapeyard.herokuapp.com/auth/google/CS",
-      callbackURL: "http://localhost:8080/auth/google/CS",
+      callbackURL: "http://marketplace.iitmandi.co.in/auth/google/CS",
       userProfileUrl: "https://www.googleapis.com.oauth2.v3.userinfo",
     },
     function (accessToken, refreshToken, profile, cb) {
