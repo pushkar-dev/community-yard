@@ -15,20 +15,24 @@ async function fetchData(email){
 }
 
 // Chat page for owner
-chatRoute.get("/chat", function (req, res) {
+chatRoute.get("/chat", async function (req, res) {
   if (req.isAuthenticated()) {
-    Chat.find({owner_email: req.user.email },
-      function(err, found) {
-          console.log(found);
-          if (err) console.log(err);
-          else {
-            res.render("chat_page", { user: req.user,chats:found });
-          }
-        });
+    const foundChats = await Chat.find({ owner_email: req.user.email }).exec();
+    
+    const chatData = await Promise.all(foundChats.map(async function (single_item_chat) {
+      const Data = await Promise.all(single_item_chat.chats.map(async function (individual) {
+        const buyerData = await fetchData(individual.buyer_email);
+        return buyerData;
+      }));
+      return Data;
+    }));
+  
+    res.render("chat_page", { user: req.user, chats: foundChats, chatData: chatData });
   } else {
     res.redirect('/');
   }
 });
+
 
 chatRoute.post("/chatWithOwner", function (req, res) {
     const body = req.body;

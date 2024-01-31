@@ -6,16 +6,16 @@
                 <div class="d-flex align-items-center justify-content-between mb-2">
                     <h6 class="mb-0">Messages</h6>
                 </div>
-                <% chats.forEach(function(single_item_chat){%>
+                <% chats.forEach(function(single_item_chat,i){%>
                 <!--for loop-->
 
                 <% if(single_item_chat.chats.length!==0){%>
                 <div>
                     Item: <h5><%= single_item_chat.item_name %></h5>
                 </div>
-                <% single_item_chat.chats.forEach(function(individual,i){ %>
+                <% single_item_chat.chats.forEach(function(individual,j){ %>
                 <div class="d-flex align-items-center border-bottom py-3">
-                    <img class="rounded-circle flex-shrink-0" src="/img/user.jpg" alt=""
+                    <img class="rounded-circle flex-shrink-0" src="<%= chatData[i][j].pic %>" alt=""
                         style="width: 40px; height: 40px;">
                     <div class="w-100 ms-3">
                         <div class="d-flex w-100 justify-content-between">
